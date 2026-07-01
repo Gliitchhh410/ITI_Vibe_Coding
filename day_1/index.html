@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickSort Analyzer & Visualizer</title>
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>QuickSort Visualizer & Benchmark Suite</h1>
+      <p>Analyze, compare, and visualize sorting algorithms assisted by GitHub Copilot</p>
+    </header>
+
+    <div class="layout">
+      <!-- Sidebar Control Panel -->
+      <aside>
+        <div class="control-group">
+          <label for="algoSelect">Algorithm</label>
+          <select id="algoSelect">
+            <option value="quickSortRecursive">QuickSort (Recursive Optimized)</option>
+            <option value="heapSort">HeapSort (In-place)</option>
+            <option value="mergeSort">MergeSort (Stable)</option>
+            <option value="insertionSort">Insertion Sort (Fallback)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="sizeSlider">Array Size</label>
+          <input type="range" id="sizeSlider" min="10" max="150" value="50">
+          <div class="range-labels">
+            <span>10</span>
+            <span id="sizeVal">50 elements</span>
+            <span>150</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="speedSlider">Speed</label>
+          <input type="range" id="speedSlider" min="1" max="100" value="30">
+          <div class="range-labels">
+            <span>Slow</span>
+            <span id="speedVal">30ms delay</span>
+            <span>Fast</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="customInput">Custom Array</label>
+          <input type="text" id="customInput" placeholder="e.g. 5, 2, 9, 1, 5, 6, 8">
+          <button id="customBtn" class="secondary" style="margin-top: 0.25rem;">Apply Custom</button>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="btn-group">
+          <button id="startBtn">Sort</button>
+          <button id="pauseBtn" class="secondary" disabled>Pause</button>
+          <button id="resetBtn" class="secondary">Reset</button>
+        </div>
+
+        <button id="stepBtn" class="accent-outline" style="width: 100%;">Single Step &rarr;</button>
+
+        <hr style="border: 0; border-top: 1px solid var(--panel-border); margin: 0.5rem 0;">
+
+        <button id="benchmarkBtn" class="accent-outline" style="width: 100%;">Run Live Benchmarks</button>
+
+        <div id="statusText">Status: Idle</div>
+      </aside>
+
+      <!-- Main Visualizer and Results Board -->
+      <main>
+        <!-- Canvas Card -->
+        <div class="card">
+          <h3 style="margin-bottom: 1rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+            <span>Visualizer Screen</span>
+            <span id="arrayTypeLabel" style="font-size: 0.8rem; color: var(--accent-color); font-weight: normal;">Random Array</span>
+          </h3>
+          <div class="canvas-container">
+            <canvas id="visualizerCanvas" width="800" height="350"></canvas>
+          </div>
+        </div>
+
+        <!-- Benchmarks Table -->
+        <div class="card" id="benchmarkCard" style="display: none;">
+          <h3>Performance Benchmark Results (Size: <span id="benchSizeLabel">1000</span> elements)</h3>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">Execution times in milliseconds (lower is better).</p>
+          <div style="overflow-x: auto;">
+            <table id="benchTable">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Random Array</th>
+                  <th>Already Sorted</th>
+                  <th>Reverse Sorted</th>
+                  <th>Many Duplicates</th>
+                </tr>
+              </thead>
+              <tbody id="benchBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Explanations & Complexity Section -->
+        <div class="card">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="quicksort-tab">QuickSort Deep-Dive</button>
+            <button class="tab-btn" data-tab="complexity-tab">Complexity Matrix</button>
+            <button class="tab-btn" data-tab="copilot-tab">Copilot Insights</button>
+          </div>
+
+          <!-- QuickSort Explanation Tab -->
+          <div id="quicksort-tab" class="tab-content active">
+            <div class="info-grid">
+              <div class="info-card">
+                <h4>How it Works</h4>
+                <p>QuickSort is a Divide-and-Conquer algorithm. It partitions the array into two sub-arrays by selecting a <strong>pivot</strong> element. Elements smaller than the pivot go to the left, and elements greater go to the right. The sub-arrays are then sorted recursively.</p>
+              </div>
+              <div class="info-card">
+                <h4>Key Optimizations Used Here</h4>
+                <ul>
+                  <li><strong>Median-of-Three:</strong> Selects the median of the first, middle, and last elements to avoid the \(O(N^2)\) worst case on sorted arrays.</li>
+                  <li><strong>Insertion Sort Threshold:</strong> Small sub-arrays (size &lt; 10) fallback to insertion sort to avoid recursive overhead.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Complexity Tab -->
+          <div id="complexity-tab" class="tab-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Best Case</th>
+                  <th>Average Case</th>
+                  <th>Worst Case</th>
+                  <th>Space Complexity</th>
+                  <th>Stable?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>QuickSort (Optimized)</strong></td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)*</td>
+                  <td>\(O(\log N)\)</td>
+                  <td>No</td>
+                </tr>
+                <tr>
+                  <td><strong>QuickSort (Basic)</strong></td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N^2)\)</td>
+                  <td>\(O(N)\)</td>
+                  <td>No</td>
+                </tr>
+                <tr>
+                  <td><strong>MergeSort</strong></td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N)\)</td>
+                  <td>Yes</td>
+                </tr>
+                <tr>
+                  <td><strong>HeapSort</strong></td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(N \log N)\)</td>
+                  <td>\(O(1)\)</td>
+                  <td>No</td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">* Median-of-three makes worst-case \(O(N^2)\) extremely rare in practice.</p>
+          </div>
+
+          <!-- Copilot Tab -->
+          <div id="copilot-tab" class="tab-content">
+            <div class="info-card">
+              <h4>Development Process Highlights</h4>
+              <p>GitHub Copilot assisted at each step of this Lab:</p>
+              <ul>
+                <li><strong>Generating Core Algorithms:</strong> Initial basic structures for QuickSort were generated quickly.</li>
+                <li><strong>Adding fallbacks & pivot selections:</strong> Asking Copilot to "optimize recursive sorting for sorted arrays" generated the Median-of-Three pivot strategy.</li>
+                <li><strong>Translating recursive to iterative:</strong> Copilot suggested stack push/pop bounds for the iterative version.</li>
+                <li><strong>Unit tests generation:</strong> Copilot generated the comprehensive Vitest suite.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
