@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini ChatGPT Clone</title>
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar for history threads -->
+    <aside class="sidebar" id="sidebar">
+      <button class="new-chat-btn" id="newChatBtn">+ New Chat</button>
+      
+      <div class="history-section">
+        <h3>Recent Chats</h3>
+        <ul class="chat-list" id="chatList">
+          <!-- Dynamically populated -->
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <label for="modelSelect">Model</label>
+        <select id="modelSelect">
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+          <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+          <option value="gemini-1.5-flash">Gemini 1.5 Flash (legacy)</option>
+        </select>
+      </div>
+    </aside>
+
+    <!-- Main Chat Window -->
+    <main class="chat-area">
+      <header class="chat-header">
+        <button class="toggle-sidebar-btn" id="toggleSidebarBtn">☰</button>
+        <h2 id="chatTitle">New Conversation</h2>
+      </header>
+
+      <!-- Message Container -->
+      <section class="messages-container" id="messagesContainer">
+        <!-- Default Welcome screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <h1>Gemini Chat</h1>
+          <p>How can I help you today?</p>
+        </div>
+      </section>
+
+      <!-- Input Section -->
+      <footer class="chat-footer">
+        <form class="input-form" id="chatForm">
+          <div class="textarea-wrapper">
+            <textarea 
+              id="userInput" 
+              placeholder="Message Gemini..." 
+              rows="1" 
+              required
+            ></textarea>
+            <button type="submit" id="sendBtn" class="send-btn">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
