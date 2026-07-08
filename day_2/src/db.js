@@ -57,7 +57,7 @@ export async function getConversationMessages(conversationId) {
 export async function createConversation(id, title) {
   const database = await getDbConnection();
   await database.run(
-    'INSERT INTO conversations (id, title) VALUES (?, ?)',
+    'INSERT OR IGNORE INTO conversations (id, title) VALUES (?, ?)',
     [id, title]
   );
 }

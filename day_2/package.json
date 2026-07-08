@@ -1,7 +1,7 @@
 {
-  "name": "lab 2",
+  "name": "chatgpt-clone-bedrock",
   "version": "1.0.0",
-  "description": "A simple ChatGPT clone using the Gemini API and SQLite.",
+  "description": "A simple ChatGPT clone using the Student Bedrock Gateway API and SQLite.",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,6 @@
     "dev": "nodemon src/server.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "sqlite": "^5.1.1",
